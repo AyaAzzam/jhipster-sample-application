@@ -1,0 +1,66 @@
+enum EventType {
+    DUNGEON_OPENED, 
+    GOLD_CHANGED, 
+    MONSTER_SPAWNED, 
+    REALM_CLOSED
+}
+
+enum Server {
+	USWEST,
+	USEAST,
+	ASIASOUTHEAST,
+	USSOUTH,
+	USSOUTHWEST,
+	USEAST2,
+	USNORTHWEST,
+	ASIAEAST,
+	EUSOUTHWEST,
+	USSOUTH2,
+	EUNORTH2,
+	EUSOUTH,
+	USSOUTH3,
+	EUWEST2,
+	USMIDWEST,
+	EUWEST,
+	USEAST3,
+	USWEST3,
+	USMIDWEST2,
+	EUEAST,
+	AUSTRALIA,
+	EUNORTH,
+	USWEST2
+}
+
+entity EventData {
+    eventType EventType
+}
+
+entity Position {
+	mapName String,
+	server Server,
+    x Float,
+    y Float
+}
+
+relationship ManyToOne {
+	EventData{player} to Player
+}
+
+entity Player {
+	accountId Long
+}
+
+entity RealmSpyUser {
+	player Player required
+}
+
+relationship OneToOne {
+	RealmSpyUser{player} to Player
+}
+
+relationship OneToOne {
+	EventData{position} to Position
+}
+
+service all with serviceImpl
+paginate EventData with infinite-scroll
